@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  type      String   // "income" or "expense"
+  color     String   @default("#3B82F6")
+  icon      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  budgets   Budget[]
+  transactions Transaction[]
+
+  @@map("categories")
+}
+
+model Budget {
+  id         String   @id @default(cuid())
+  categoryId String
+  amount     Float
+  month      String?  // Format: "YYYY-MM" (null for yearly budgets)
+  year       Int
+  monthNum   Int?     // null for yearly budgets
+  budgetType String   @default("monthly") // "yearly" or "monthly"
+  expenseType String  @default("variable") // "fixed" or "variable"
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([categoryId, month, year, budgetType])
+  @@map("budgets")
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  amount      Float
+  type        String   // "income" or "expense"
+  categoryId  String
+  description String?
+  date        DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@map("transactions")
+}
