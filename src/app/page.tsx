@@ -7,9 +7,7 @@ import {
   Card, 
   CardBody, 
   CardHeader, 
-  Button, 
   Divider,
-  Progress
 } from "@heroui/react";
 
 export default function Home() {

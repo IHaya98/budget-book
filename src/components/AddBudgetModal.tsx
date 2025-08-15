@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
 import { 
   Modal, 
   ModalContent, 
@@ -12,7 +11,6 @@ import {
   Input, 
   Select, 
  SelectItem,
-  Chip
 } from "@heroui/react";
 
 interface Category {
@@ -123,8 +121,8 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
                   }));
                 }}
               >
-                <SelectItem key="monthly" value="monthly">月間予算</SelectItem>
-                <SelectItem key="yearly" value="yearly">年間予算</SelectItem>
+                <SelectItem key="monthly">月間予算</SelectItem>
+                <SelectItem key="yearly">年間予算</SelectItem>
               </Select>
 
               <Select
@@ -137,8 +135,8 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
                   }));
                 }}
               >
-                <SelectItem key="fixed" value="fixed">固定費</SelectItem>
-                <SelectItem key="variable" value="variable">変動費</SelectItem>
+                <SelectItem key="fixed">固定費</SelectItem>
+                <SelectItem key="variable">変動費</SelectItem>
               </Select>
             </div>
 
@@ -151,8 +149,8 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
               }}
               isRequired
             >
-              <SelectItem key="" value="">カテゴリを選択</SelectItem>
-              {expenseCategories.map((category) => (
+              <SelectItem key="default">カテゴリを選択</SelectItem>
+              {/* {expenseCategories.map((category) => (
                 <SelectItem key={category.id} value={category.id}>
                   <div className="flex items-center gap-2">
                     <div
@@ -162,7 +160,7 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
                     {category.name}
                   </div>
                 </SelectItem>
-              ))}
+              ))} */}
             </Select>
 
             {/* 金額 */}
@@ -196,7 +194,7 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
                 <Input
                   type="number"
                   label="対象年"
-                  value={formData.year}
+                  value={formData.year.toString()}
                   onChange={(e) => setFormData(prev => ({ ...prev, year: parseInt(e.target.value) }))}
                   placeholder="2024"
                   min="2000"
@@ -219,7 +217,7 @@ export default function AddBudgetModal({ isOpen, onClose }: AddBudgetModalProps)
           </Button>
           <Button 
             color="primary" 
-            onPress={handleSubmit}
+            onPress={(e) => handleSubmit(e as unknown as React.FormEvent)}
             isLoading={loading}
             isDisabled={!formData.amount || !formData.categoryId}
           >

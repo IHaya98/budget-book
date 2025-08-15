@@ -11,8 +11,6 @@ import {
   NavbarMenu, 
   NavbarMenuItem, 
   NavbarMenuToggle,
-  Button,
-  Link as HeroUILink
 } from "@heroui/react";
 import { HomeIcon, ChartBarIcon, CogIcon, WalletIcon } from '@heroicons/react/24/outline';
 
@@ -24,6 +22,7 @@ const navigation = [
 ];
 
 export default function Navigation() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 

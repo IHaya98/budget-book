@@ -48,9 +48,7 @@ export default function BudgetList({ budgetType }: BudgetListProps) {
   const [year, setYear] = useState(new Date().getFullYear());
   const [expenseTypeFilter, setExpenseTypeFilter] = useState<'all' | 'fixed' | 'variable'>('all');
 
-  useEffect(() => {
-    fetchBudgets();
-  }, [month, year, budgetType]);
+
 
   const fetchBudgets = async () => {
     try {
@@ -71,6 +69,11 @@ export default function BudgetList({ budgetType }: BudgetListProps) {
     }
   };
 
+  useEffect(() => {
+    fetchBudgets();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [month, year, budgetType]);
+  
   const handleDelete = async (id: string) => {
     if (!confirm('この予算を削除しますか？')) {
       return;
@@ -145,12 +148,13 @@ export default function BudgetList({ budgetType }: BudgetListProps) {
               <Select
                 label="費目タイプ"
                 selectedKeys={[expenseTypeFilter]}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onSelectionChange={(keys) => setExpenseTypeFilter(Array.from(keys)[0] as any)}
                 className="w-32"
               >
-                <SelectItem key="all" value="all">すべて</SelectItem>
-                <SelectItem key="fixed" value="fixed">固定費</SelectItem>
-                <SelectItem key="variable" value="variable">変動費</SelectItem>
+                <SelectItem key="all">すべて</SelectItem>
+                <SelectItem key="fixed">固定費</SelectItem>
+                <SelectItem key="variable">変動費</SelectItem>
               </Select>
             </div>
             <div className="flex space-x-4">
