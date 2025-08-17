@@ -10,8 +10,6 @@ import {
   Divider,
   Progress,
   Chip,
-  Select,
-  SelectItem
 } from "@heroui/react";
 
 interface Budget {
@@ -137,7 +135,6 @@ export default function BudgetList({ budgetType }: BudgetListProps) {
 
   const fixedBudgets = expenseBudgets.filter(b => b.expenseType === 'fixed');
   const variableBudgets = expenseBudgets.filter(b => b.expenseType === 'variable');
-
   return (
     <div className="space-y-6">
       {/* Filters */}
@@ -145,17 +142,16 @@ export default function BudgetList({ budgetType }: BudgetListProps) {
         <CardBody className="p-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
             <div className="flex space-x-4">
-              <Select
-                label="費目タイプ"
-                selectedKeys={[expenseTypeFilter]}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                onSelectionChange={(keys) => setExpenseTypeFilter(Array.from(keys)[0] as any)}
-                className="w-32"
+              <select
+                id="expenseType"
+                value={expenseTypeFilter}
+                onChange={(e) => setExpenseTypeFilter(e.target.value as 'all' | 'fixed' | 'variable')}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-indigo-500"
               >
-                <SelectItem key="all">すべて</SelectItem>
-                <SelectItem key="fixed">固定費</SelectItem>
-                <SelectItem key="variable">変動費</SelectItem>
-              </Select>
+                <option className="text-black" value="all">すべて</option>
+                <option className="text-black" value="fixed">固定費</option>
+                <option className="text-black" value="variable">変動費</option>
+              </select>
             </div>
             <div className="flex space-x-4">
               {budgetType === 'monthly' ? (

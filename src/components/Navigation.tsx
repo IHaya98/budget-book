@@ -1,16 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
-  Navbar, 
-  NavbarBrand, 
-  NavbarContent, 
-  NavbarItem, 
-  NavbarMenu, 
-  NavbarMenuItem, 
+  Navbar,
+  NavbarBrand,
   NavbarMenuToggle,
+  NavbarMenuItem,
+  NavbarMenu,
+  NavbarContent,
+  NavbarItem,
+  Link
 } from "@heroui/react";
 import { HomeIcon, ChartBarIcon, CogIcon, WalletIcon } from '@heroicons/react/24/outline';
 
@@ -22,15 +22,14 @@ const navigation = [
 ];
 
 export default function Navigation() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} className="bg-background/60 backdrop-blur-md border-b border-divider">
+    <Navbar isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen} className="bg-background/60 backdrop-blur-md border-b border-divider">
       <NavbarContent>
         <NavbarMenuToggle
-          aria-label="メニューを開く"
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
         <NavbarBrand>
@@ -44,11 +43,10 @@ export default function Navigation() {
         {navigation.map((item) => {
           const isActive = pathname === item.href;
           return (
-            <NavbarItem key={item.name} isActive={isActive}>
+            <NavbarItem key={item.name} isActive={isActive} className={isActive ? "text-blue-500" : "text-white-500"}>
               <Link
                 href={item.href}
                 className="flex items-center gap-2"
-                color={isActive ? "primary" : "foreground"}
               >
                 <item.icon className="w-4 h-4" />
                 {item.name}
@@ -59,16 +57,17 @@ export default function Navigation() {
       </NavbarContent>
 
       <NavbarMenu>
-        {navigation.map((item) => {
-          const isActive = pathname === item.href;
+        {navigation.map((item,index) => {
           return (
             <NavbarMenuItem key={item.name}>
               <Link
                 href={item.href}
-                className={`w-full flex items-center gap-2 p-2 rounded-lg ${
-                  isActive ? 'bg-primary text-primary-foreground' : 'text-foreground'
-                }`}
+                className="w-full"
+                color={
+                  index === 2 ? "warning" : index === navigation.length - 1 ? "danger" : "foreground"
+                }
                 onClick={() => setIsMenuOpen(false)}
+                size="lg"
               >
                 <item.icon className="w-5 h-5" />
                 {item.name}
